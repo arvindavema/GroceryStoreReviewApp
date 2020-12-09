@@ -1,16 +1,14 @@
 package com.example.fromsscratch
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.graphics.PixelFormat
 import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.View
 import android.view.WindowManager
-import android.widget.*
+import android.widget.EditText
+import android.widget.RatingBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -22,7 +20,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import org.json.JSONObject
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
@@ -54,6 +51,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
         //Get Firebase Instances
         mAuth=FirebaseAuth.getInstance()
+
+
 
 
         //Get instance of FirebaseDatabase
@@ -122,6 +121,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                     android.R.string.yes, Toast.LENGTH_SHORT).show()
                 val etext=mDialogView.findViewById<EditText>(R.id.commentBox)
                 val rbar=mDialogView.findViewById<RatingBar>(R.id.rbar)
+
+
+                // Write a message to the database
+                val database = FirebaseDatabase.getInstance()
+                val myRef = database.getReference("Restaurant")
+
+                myRef.setValue(etext.text)
+
+
                 mFirebaseDatabaseInstances?.getReference("restaurant")?.child("restaurant")?.setValue(
                     name+","+address+","+etext.text+","+rbar.numStars)
 
