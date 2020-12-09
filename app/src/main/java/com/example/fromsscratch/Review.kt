@@ -8,8 +8,5 @@ data class Review (
     val username: String? = "",
     val body:String? = "",
     val rating:String? = "",
-//    val date:String? = "",
-    val image:String? =  "",
-    val timeStamp: String?,
     val id: String? = ""
 )

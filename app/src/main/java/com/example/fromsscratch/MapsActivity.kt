@@ -6,6 +6,8 @@ import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Build
@@ -32,7 +34,6 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.PlaceLikelihood
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
-import com.google.android.libraries.places.api.net.FetchPlaceResponse
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.firebase.auth.FirebaseAuth
@@ -177,6 +178,7 @@ class MapsActivity :
         }
         mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 17f))
     }
+
     private fun enableMyLocation() {
         if (!::mMap.isInitialized) return
         // [START maps_check_location_permission]
@@ -208,7 +210,6 @@ class MapsActivity :
                     permissionDenied = true
                     toast("You will need to provide access to your location!")
                 }
-
             }
         }
     } // End onRequest override
@@ -235,6 +236,9 @@ class MapsActivity :
            val poi = it.place
            Toast.makeText(this,
                "Clicked: ${poi.name.toString()},  Place ID:${poi.id.toString()},   Address:${poi.address.toString()} ",  Toast.LENGTH_LONG).show()
+
+            showReviewForm(poi)
+
         }
 
         req.addOnFailureListener {
@@ -244,8 +248,30 @@ class MapsActivity :
                 Log.e("PROJ", "${statusCode}: Place not found: ${it.message}")
             }
         }
+
+
     }
 
+    private fun showReviewForm(place: Place){
+        var alertDialog = AlertDialog.Builder(this). create()
+        alertDialog.setTitle(place.name)
+        alertDialog.setMessage(place.address)
+        alertDialog.setButton("Leave a Review!", DialogInterface.OnClickListener { dialog, which ->
+            var intent = Intent(this@MapsActivity, AddReviewActivity::class.java)
+
+            //store name, address and placeId incase you need to referernce the Place object again
+            intent.putExtra("name", place.name)
+            intent.putExtra("address", place.address)
+            intent.putExtra("placeId", place.id)
+            intent.putExtra("authonName", mAuth!!.currentUser!!.displayName )
+            intent.putExtra("user_id", mAuth!!.currentUser!!.uid)
+
+
+            //TODO implement AddReviewActivity. just make it a form lik e
+            //TODO ayomi did that one time.
+            startActivity(intent)
+        })
+    }
     private fun toast(msg: String){
         Toast.makeText(this@MapsActivity, msg, Toast.LENGTH_LONG).show()
     }

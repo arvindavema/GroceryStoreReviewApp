@@ -124,8 +124,6 @@ class StoreActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_restaurant)
-
-
         val list: ArrayList<String> = ArrayList()
 
         var obj = JSONObject(resList);
