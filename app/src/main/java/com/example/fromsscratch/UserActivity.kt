@@ -99,7 +99,7 @@ class UserActivity : AppCompatActivity() {
 
     fun parceableUser(): Parcelable {
         val parcelable = Intent(this@UserActivity, StoreMapsActivity::class.java)  as Parcelable
-        mCurrUser.writeToParcel(parcelable )
+        mCurrUser.writeToParcel( )
     }
 
     private fun log(msg: String) {
