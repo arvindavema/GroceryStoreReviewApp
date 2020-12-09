@@ -26,15 +26,12 @@ internal class MyReviewList (private val context: Activity, private var mReviews
         val mStore: TextView = itemView.findViewById(R.id.storeName)
         val mRating: RatingBar = itemView.findViewById(R.id.ratingBar)
         val mBody: TextView = itemView.findViewById(R.id.reviewBody)
-        val mDate: TextView = itemView.findViewById(R.id.datePosted)
-
 
         val review = mReviews[position]
 
 
         mAuthor.text = review.username
         mStore.text = review.storeName
-        mDate.text = review.timeStamp
         mBody.text = review.body
         mRating.rating = review.rating!!.toFloat()
 

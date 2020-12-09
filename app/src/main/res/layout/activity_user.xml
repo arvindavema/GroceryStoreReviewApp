@@ -10,13 +10,14 @@
         android:id="@+id/homeTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/gradient_backgrount"
+        android:background="@android:color/transparent"
         android:gravity="center"
         android:text="@string/homeTitle"
         android:textAppearance="@style/TextAppearance.AppCompat.Display3"
-        android:textColor="#FFFFFF"
+        android:textColor="#3F51B5"
         app:layout_constraintBottom_toTopOf="@+id/reviewListView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,8 +33,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/homeTitle"
-        tools:listitem="@layout/review_list_item" />
+        tools:listitem="@layout/review_list_item" >
 
+    </ListView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
