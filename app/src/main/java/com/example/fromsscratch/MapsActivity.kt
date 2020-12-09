@@ -27,9 +27,12 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PointOfInterest
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.PlaceLikelihood
+import com.google.android.libraries.places.api.net.FetchPlaceRequest
+import com.google.android.libraries.places.api.net.FetchPlaceResponse
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.firebase.auth.FirebaseAuth
@@ -43,7 +46,8 @@ class MapsActivity :
     GoogleMap.OnMyLocationClickListener,
     ActivityCompat.OnRequestPermissionsResultCallback,
     OnMapReadyCallback,
-    GoogleMap.OnMapLoadedCallback {
+    GoogleMap.OnMapLoadedCallback,
+    GoogleMap.OnPoiClickListener {
 
     private lateinit var mMap: GoogleMap
     lateinit var latitude:String
@@ -72,11 +76,11 @@ class MapsActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store_maps)
-        Places.initialize(applicationContext, "AIzaSyApRPkvVb3Gu_ffcVPZ0_cxLGtxBfzgew8")
+
         // Initialize the SDK
         // Create a new PlacesClient instance
-        placesClient = Places.createClient(this)
-
+        Places.initialize(applicationContext, "AIzaSyBh3A4SsoTM3lB8p1J5eIqDEOoXkpzA5DM")
+        placesClient = Places.createClient(applicationContext)
 
         //Get Firebase Instances
         mAuth=FirebaseAuth.getInstance()
@@ -108,6 +112,7 @@ class MapsActivity :
         mMap = googleMap ?: return
         googleMap.setOnMyLocationButtonClickListener(this)
         googleMap.setOnMyLocationClickListener(this)
+        googleMap.setOnPoiClickListener(this)
         enableMyLocation()
 
         val double1: Double? = latitude.toDouble()
@@ -126,42 +131,32 @@ class MapsActivity :
                 if (task.isSuccessful) {
                     val response = task.result
                     for (placeLikelihood: PlaceLikelihood in response?.placeLikelihoods ?: emptyList()) {
-                        toast(
-                            applicationContext,
-                            "Place '${placeLikelihood.place.name}' has likelihood: ${placeLikelihood.likelihood}"
-                        )
+                        toast("Place '${placeLikelihood.place.name}' has likelihood: ${placeLikelihood.likelihood}")
                     }
                 } else {
                     val exception = task.exception
-                    if (exception is ApiException) {
-                        toast(applicationContext, "Place not found: ${exception.statusCode}")
-                    }
+                    if (exception is ApiException) {   toast( "Place not found: ${exception.statusCode}")                    }
                 }
             }
         } else {
             // A local method to request required permissions;
-            // See https://developer.android.com/training/permissions/requesting
             ask()
         }
 
-
+        //setting and adding a marker to a position
         marker = mMap?.addMarker(
-            MarkerOptions().position(sydney).title(name).snippet(address)
-        )
+            MarkerOptions().position(sydney)
+                .title(name)
+                .snippet(address))
 
         mMap.setOnInfoWindowClickListener {
-
-            val windowManager2 =
-                getSystemService(Context.WINDOW_SERVICE) as WindowManager
-            val layoutInflater =
-                getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            val windowManager2 =  getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            val layoutInflater =  getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
             val LAYOUT_FLAG: Int
             LAYOUT_FLAG = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-            } else {
-                WindowManager.LayoutParams.TYPE_PHONE
-            }
+            } else {   WindowManager.LayoutParams.TYPE_PHONE }
 
             val mDialogView = LayoutInflater.from(this).inflate(R.layout.info_window, null)
 
@@ -170,24 +165,17 @@ class MapsActivity :
             builder.setMessage(address)
 
             builder.setPositiveButton(android.R.string.yes) { dialog, which ->
-                Toast.makeText(applicationContext,
-                    android.R.string.yes, Toast.LENGTH_SHORT).show()
-
+                Toast.makeText(applicationContext,  android.R.string.yes, Toast.LENGTH_SHORT).show()
                 val body=mDialogView.findViewById<EditText>(R.id.commentBox)
                 val ratingBar =mDialogView.findViewById<RatingBar>(R.id.rbar)
             }
-
             builder.setNegativeButton(android.R.string.no) { dialog, which ->
-                Toast.makeText(applicationContext,
-                    android.R.string.no, Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext,  android.R.string.no, Toast.LENGTH_SHORT).show()
             }
-
             builder.show()
             this.closeContextMenu()
-
         }
         mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 17f))
-
     }
     private fun enableMyLocation() {
         if (!::mMap.isInitialized) return
@@ -198,7 +186,6 @@ class MapsActivity :
         } else {
             ask()
         }
-        // [END maps_check_location_permission]
     }
 
     override fun onMapLoaded() {
@@ -206,55 +193,65 @@ class MapsActivity :
     }
 
     //Requesting Permissions
-    private fun ask() {
-        requestPermissions( PERMISSIONS, REQUEST_CODE)
-    }
+    private fun ask() {  requestPermissions( PERMISSIONS, REQUEST_CODE) }
 
-    override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray) {
+
         when (requestCode) {
-            REQUEST_CODE -> {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.isNotEmpty() &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                {
+            REQUEST_CODE ->   {
+                if (grantResults.isNotEmpty() &&   grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     enableMyLocation()
                 } else {
                     permissionDenied = true
-                    toast(this@MapsActivity,"You will need to provide access to your location!")
+                    toast("You will need to provide access to your location!")
                 }
+
+            }
+        }
+    } // End onRequest override
+
+    // Action when the button at top right is clicked on a map
+    override fun onMyLocationButtonClick(): Boolean {
+        Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show()
+        return false
+    }
+
+    // Action when blue dot on map at your location is clicled
+    override fun onMyLocationClick(pOI: Location) {
+        Toast.makeText(this, "Current location:\n${pOI}", Toast.LENGTH_LONG).show()
+    }
+
+    // On click for Points of interests automatically shown by google maps
+    override fun onPoiClick(p: PointOfInterest) {
+        val placeId = p.placeId
+        val placeFields = listOf(Place.Field.ADDRESS, Place.Field.PHOTO_METADATAS)
+        val request = FetchPlaceRequest.newInstance(placeId, placeFields)
+
+        var req = placesClient.fetchPlace(request)
+        req.addOnSuccessListener {
+           val poi = it.place
+           Toast.makeText(this,
+               "Clicked: ${poi.name.toString()},  Place ID:${poi.id.toString()},   Address:${poi.address.toString()} ",  Toast.LENGTH_LONG).show()
+        }
+
+        req.addOnFailureListener {
+            if(it is ApiException){
+                toast("Opps! Something went wrong")
+                val statusCode = it.statusCode
+                Log.e("PROJ", "${statusCode}: Place not found: ${it.message}")
             }
         }
     }
-    private fun showMissingPermissionError() {
-        toast(this, "u dun fukked up")
-    }
 
-    override fun onResumeFragments() {
-        super.onResumeFragments()
-        if (permissionDenied) {
-            // Permission was not granted, display error dialog.
-            showMissingPermissionError()
-            permissionDenied = false
-        }
-    }
-
-    private fun toast(context: Context,msg: String){
-        Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+    private fun toast(msg: String){
+        Toast.makeText(this@MapsActivity, msg, Toast.LENGTH_LONG).show()
     }
 
     companion object {
-       val PERMISSIONS = arrayOf( ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION)
+        val PERMISSIONS = arrayOf( ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION)
         const val REQUEST_CODE = 99
-    }
-
-    override fun onMyLocationButtonClick(): Boolean {
-        Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show()
-        // Return false so that we don't consume the event and the default behavior still occurs
-        // (the camera animates to the user's current position).
-        return false    }
-
-    override fun onMyLocationClick(p0: Location) {
-        Toast.makeText(this, "Current location:\n$p0", Toast.LENGTH_LONG).show()
     }
 }

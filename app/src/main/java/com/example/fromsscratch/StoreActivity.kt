@@ -6,6 +6,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.libraries.places.api.Places
 import org.json.JSONObject
 
 class StoreActivity : AppCompatActivity() {
@@ -123,6 +124,8 @@ class StoreActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_restaurant)
+
+
         val list: ArrayList<String> = ArrayList()
 
         var obj = JSONObject(resList);
@@ -136,7 +139,7 @@ class StoreActivity : AppCompatActivity() {
                 res.getJSONObject(i).get("id") .toString(),
                 res.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").get("lat") .toString(),
                 res.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").get("lng").toString(),
-               res.getJSONObject(i).get("vicinity").toString()
+                res.getJSONObject(i).get("vicinity").toString()
             )
 
             restaurantList.add(r)
