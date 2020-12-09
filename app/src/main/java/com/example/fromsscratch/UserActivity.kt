@@ -97,10 +97,6 @@ class UserActivity : AppCompatActivity() {
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
     }
 
-    fun parceableUser(): Parcelable {
-        val parcelable = Intent(this@UserActivity, StoreMapsActivity::class.java)  as Parcelable
-        mCurrUser.writeToParcel( )
-    }
 
     private fun log(msg: String) {
         Log.d("Proj", msg )
