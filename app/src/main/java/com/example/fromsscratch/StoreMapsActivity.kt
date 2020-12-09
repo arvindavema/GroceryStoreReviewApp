@@ -1,5 +1,6 @@
 package com.example.fromsscratch
 
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.android.gms.location.FusedLocationProviderClient

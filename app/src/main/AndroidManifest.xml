@@ -17,6 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FromsScratch">
 
+        <activity android:name=".RestaurantActivity"></activity>
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -27,15 +29,16 @@
         -->
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+            android:value="@integer/google_play_services_version"/>
+
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="${mapsApiKey}" />
 
 
         <activity
-            android:name=".StoreMapsActivity"
+            android:name=".MapsActivity"
             android:label="@string/title_activity_store_maps"></activity>
         <activity android:name=".UserActivity" />
         <activity android:name=".ReviewsViewActivity" />

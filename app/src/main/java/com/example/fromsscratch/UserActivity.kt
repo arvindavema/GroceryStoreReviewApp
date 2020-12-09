@@ -43,7 +43,7 @@ class UserActivity : AppCompatActivity() {
                 true
             }
             R.id.findStoreItem -> {
-                startActivity(Intent(this, StoreMapsActivity::class.java))
+                startActivity(Intent(this, RestaurantActivity::class.java))
                 true
             }
             else -> false
