@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">FromsScratch</string>
     <string name="type_here_string">Type Here</string>
+    <string name="home">Home</string>
+    <string name="logoutItem">Sign out</string>
+    <string name="find_a_store">Find A Store</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="homeTitle">Your Reviews</string>
+    <string name="store_name">Store Name</string>
+    <string name="review_body">Review Body</string>
 </resources>
