@@ -9,5 +9,7 @@ data class Review (
     val body:String? = "",
     val rating:Float? = 0f,
     val date:String? = "",
-    val image:String? =  ""
+    val image:String? =  "",
+    val timeStamp: String?,
+    val id: String? = timeStamp
 )
