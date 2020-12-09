@@ -8,9 +8,9 @@ import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import org.json.JSONObject
 
-class RestaurantActivity : AppCompatActivity() {
+class StoreActivity : AppCompatActivity() {
 
-    val restaurantList = ArrayList<Restaurant>()
+    val restaurantList = ArrayList<Store>()
     val resList:String="      {\n" +
             "                \"debug_log\" : {\n" +
             "                \"line\" : []\n" +
@@ -131,11 +131,12 @@ class RestaurantActivity : AppCompatActivity() {
             var item = res.getJSONObject(i).get("name")
             list.add(item.toString())
 
-            val r = Restaurant(          res.getJSONObject(i).get("name").toString(),
+            val r = Store(
+                res.getJSONObject(i).get("name").toString(),
                 res.getJSONObject(i).get("id") .toString(),
                 res.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").get("lat") .toString(),
                 res.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").get("lng").toString(),
-                res.getJSONObject(i).get("vicinity").toString()
+               res.getJSONObject(i).get("vicinity").toString()
             )
 
             restaurantList.add(r)
@@ -155,12 +156,12 @@ class RestaurantActivity : AppCompatActivity() {
 
         mListView.onItemClickListener = AdapterView.OnItemClickListener() {
                 parent, view, position, id ->
-            val selectedItemText = parent.getItemAtPosition(position)
-            val r:Restaurant=restaurantList.get(position)
+            parent.getItemAtPosition(position)
+            val r:Store=restaurantList.get(position)
             val intent = Intent(applicationContext, MapsActivity::class.java)
             intent.putExtra("lat",r.latitude)
             intent.putExtra("lon",r.longitude)
-            intent.putExtra("id",r.id)
+            intent.putExtra("id",r.id.toString())
             intent.putExtra("name",r.name)
             intent.putExtra("add",r.address)
             startActivity(intent)

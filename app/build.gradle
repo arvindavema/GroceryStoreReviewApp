@@ -44,7 +44,8 @@ android {
         jvmTarget = '1.8'
     }
 }
-
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -58,12 +59,13 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    implementation 'com.google.android.gms:play-services-location:11.8.0'
+    implementation 'com.google.android.gms:play-services-location:17.1.0'
+    implementation 'com.google.android.libraries.places:places:2.4.0'
 
     // Import the Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:26.1.1')
-
+    implementation platform('com.google.firebase:firebase-bom:26.1.1')
     // When using the BoM, you don't specify versions in Firebase library dependencies
 
-
-}
+    implementation 'com.google.firebase:firebase-analytics:18.0.0'
+    implementation 'com.google.android.gms:play-services-base:17.5.0'}

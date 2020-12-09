@@ -22,14 +22,14 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         log("oncreate from Lofin")
-
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_login)
+        mAuth = FirebaseAuth.getInstance()
+
         userEmail = findViewById(R.id.editTextTextEmailAddress)
         userPassword=findViewById(R.id.editTextTextPassword)
-
-        mAuth = FirebaseAuth.getInstance()
+        log("end oncreate from Lofin")
     }
 
     public override fun onStart() {
@@ -55,16 +55,18 @@ class LoginActivity : AppCompatActivity() {
         }
 
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, OnCompleteListener<AuthResult> { task ->
+//            progressBar.visibility = View
             if (task.isSuccessful) {
                 Toast.makeText(applicationContext, "Login successful!", Toast.LENGTH_LONG).show()
-                log("starting user from login")
-
-                startActivity(Intent(this@LoginActivity, UserActivity::class.java))
+                var intent = Intent(this@LoginActivity, UserActivity::class.java)
+                intent.putExtra("email", mAuth.currentUser?.email)
+                startActivity(intent)
             } else {
-                Toast.makeText( applicationContext,  "Login failed! Please try again later", Toast.LENGTH_LONG).show()
-                log("starting main from login")
-                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-
+                Toast.makeText(
+                    applicationContext,
+                    "Login failed! Please try again later",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         })
     }

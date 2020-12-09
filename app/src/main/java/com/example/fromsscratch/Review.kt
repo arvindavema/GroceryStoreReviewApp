@@ -7,9 +7,9 @@ data class Review (
     val storeName: String? = "",
     val username: String? = "",
     val body:String? = "",
-    val rating:Float? = 0f,
-    val date:String? = "",
+    val rating:String? = "",
+//    val date:String? = "",
     val image:String? =  "",
     val timeStamp: String?,
-    val id: String? = timeStamp
+    val id: String? = ""
 )

@@ -11,6 +11,7 @@ import android.view.ViewParent
 import android.widget.ArrayAdapter
 import android.widget.RatingBar
 import android.widget.TextView
+import java.sql.Timestamp
 
 
 internal class MyReviewList (private val context: Activity, private var mReviews: List<Review>) : ArrayAdapter<Review>(context, R.layout.review_list_item,mReviews) {
@@ -33,7 +34,7 @@ internal class MyReviewList (private val context: Activity, private var mReviews
 
         mAuthor.text = review.username
         mStore.text = review.storeName
-        mDate.text = review.date
+        mDate.text = review.timeStamp
         mBody.text = review.body
         mRating.rating = review.rating!!.toFloat()
 
