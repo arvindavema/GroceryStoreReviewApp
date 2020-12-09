@@ -4,5 +4,7 @@ data class User(
     var id: String? = "",
     var email: String? = "",
     var username: String? = "",
-    var image_path: String? = ""
+    var image_path: String? = "",
+    var reviews: List<Review> = emptyList()
 )
+
