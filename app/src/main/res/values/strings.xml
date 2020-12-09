@@ -9,4 +9,5 @@
     <string name="homeTitle">Your Reviews</string>
     <string name="store_name">Store Name</string>
     <string name="review_body">Review Body</string>
+    <string name="title_activity_store_maps">Map</string>
 </resources>

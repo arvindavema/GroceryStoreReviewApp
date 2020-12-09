@@ -34,14 +34,10 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
-
-    override fun onStart() {
+    public override fun onStart() {
         super.onStart()
-        if(mAuth?.currentUser != null ) {
+        if(mAuth.currentUser != null){
             startActivity(Intent(this, UserActivity::class.java))
         }
     }
-
-
 }

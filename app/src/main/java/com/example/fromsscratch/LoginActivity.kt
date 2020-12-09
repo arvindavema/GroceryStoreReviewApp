@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -17,11 +18,13 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var userEmail: EditText
     private lateinit var userPassword: EditText
-    private lateinit var progressBar: ProgressBar
     private lateinit var mAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        log("oncreate from Lofin")
+
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_login)
         userEmail = findViewById(R.id.editTextTextEmailAddress)
         userPassword=findViewById(R.id.editTextTextPassword)
@@ -31,15 +34,13 @@ class LoginActivity : AppCompatActivity() {
 
     public override fun onStart() {
         super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = mAuth.currentUser
-        if(currentUser != null){
+        if(mAuth.currentUser != null){
             startActivity(Intent(this@LoginActivity, UserActivity::class.java))
         }
     }
 
     fun login(view: View?) {
-        progressBar.visibility = View.VISIBLE
+        log("login")
 
         val email: String = userEmail.text.toString()
         val password: String = userPassword.text.toString()
@@ -54,19 +55,21 @@ class LoginActivity : AppCompatActivity() {
         }
 
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, OnCompleteListener<AuthResult> { task ->
-            progressBar.visibility = View.GONE
             if (task.isSuccessful) {
                 Toast.makeText(applicationContext, "Login successful!", Toast.LENGTH_LONG).show()
-                var intent = Intent(this@LoginActivity, UserActivity::class.java)
-                startActivity(intent)
+                log("starting user from login")
+
+                startActivity(Intent(this@LoginActivity, UserActivity::class.java))
             } else {
-                Toast.makeText(
-                    applicationContext,
-                    "Login failed! Please try again later",
-                    Toast.LENGTH_LONG
-                ).show()
+                Toast.makeText( applicationContext,  "Login failed! Please try again later", Toast.LENGTH_LONG).show()
+                log("starting main from login")
+                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+
             }
         })
     }
 
+    private fun log(msg: String) {
+        Log.d("Proj", msg )
+    }
 }

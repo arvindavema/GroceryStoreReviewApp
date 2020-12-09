@@ -3,6 +3,7 @@ package com.example.fromsscratch
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.google.firebase.auth.FirebaseAuth
@@ -16,12 +17,11 @@ class UserActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
     }
 
-
     override fun onStart() {
         super.onStart()
 
-        if(mAuth?.currentUser == null ) {
-            startActivity(Intent(this@UserActivity, MainActivity::class.java))
+        if(mAuth.currentUser == null) {
+            startActivity(Intent(this,MainActivity::class.java))
         }
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -33,19 +33,25 @@ class UserActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.homeItem -> {
-                startActivity(Intent(this@UserActivity, UserActivity::class.java))
+                log("starting user from user, do nothing")
+                startActivity(Intent(this, UserActivity::class.java))
                 true
             }
             R.id.logoutItem -> {
                 mAuth.signOut()
-                startActivity(Intent(this@UserActivity, MainActivity::class.java))
+                startActivity(Intent(this, MainActivity::class.java))
                 true
             }
             R.id.findStoreItem -> {
-
+                startActivity(Intent(this, StoreMapsActivity::class.java))
                 true
             }
             else -> false
         }
+    }
+
+
+    private fun log(msg: String) {
+        Log.d("Proj", msg )
     }
 }
