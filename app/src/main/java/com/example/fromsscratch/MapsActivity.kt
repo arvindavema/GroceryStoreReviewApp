@@ -176,6 +176,8 @@ class MapsActivity :
             builder.show()
             this.closeContextMenu()
         }
+
+        
         mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 17f))
     }
 
@@ -280,4 +282,6 @@ class MapsActivity :
         val PERMISSIONS = arrayOf( ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION)
         const val REQUEST_CODE = 99
     }
+
+
 }
