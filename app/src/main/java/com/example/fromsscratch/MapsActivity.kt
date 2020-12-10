@@ -222,7 +222,7 @@ class MapsActivity :
 
     // Action when blue dot on map at your location is clicled
     override fun onMyLocationClick(pOI: Location) {
-        Toast.makeText(this, "Current location:\n${pOI}", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Current location:\n$pOI", Toast.LENGTH_LONG).show()
     }
 
     // On click for Points of interests automatically shown by google maps
@@ -235,10 +235,9 @@ class MapsActivity :
         req.addOnSuccessListener {
            val poi = it.place
            Toast.makeText(this,
-               "Clicked: ${poi.name.toString()},  Place ID:${poi.id.toString()},   Address:${poi.address.toString()} ",  Toast.LENGTH_LONG).show()
+               "Clicked: ${it.place.name},  Place ID:${poi.id},   Address:${poi.address.toString()} ",  Toast.LENGTH_LONG).show()
 
             showReviewForm(poi)
-
         }
 
         req.addOnFailureListener {
@@ -269,11 +268,12 @@ class MapsActivity :
 
             //TODO implement AddReviewActivity. just make it a form lik e
             //TODO ayomi did that one time.
+            toast("Don;t worry, this is just unimplemented")
             startActivity(intent)
         })
     }
     private fun toast(msg: String){
-        Toast.makeText(this@MapsActivity, msg, Toast.LENGTH_LONG).show()
+        Toast.makeText(this@MapsActivity, msg, Toast.LENGTH_SHORT).show()
     }
 
     companion object {
