@@ -16,12 +16,17 @@ Firebase authentication was used to register and login users using the email and
   
   #### Maps and Places
   The user can go to the Map Screen when they want to find groceries near them. The grocery stores are identified by a marker that displays the overall rating of the grocery store. Users can tap this marker and write their own review. This was all done using the Google Maps API, Places API.
-   <img float='left' src= 'GroceryRating/mapreview.png' width=150>
-   
+  <p float='left'>
+  <img src= 'GroceryRating/mapreview.png' width=150>
+   </p>
   #### Writing a review
   When a user writes a review, it gets saved to Firebase's Realtime Database. The review is both added to the users review history, as well as the particular grocery store. Adding a review causes the store's overall rating to change as well. 
+  
+  <p float='left'>
   <img src= 'GroceryRating/reviews.png' width=150>
- 
+ </p>
+   
+   
  ###### RIP
  The realtime database no longer exists and the API keys no longer work so although this app was once in its hayday, it no longer functions right. 
   
